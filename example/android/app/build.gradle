@@ -117,3 +117,10 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+repositories {
+maven { url "https://libraries.iubenda.com/android" }
+}
+dependencies {
+implementation "com.iubenda:mobile-sdk:2.6.7"
+}

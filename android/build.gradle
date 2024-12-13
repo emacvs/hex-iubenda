@@ -96,6 +96,11 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation "com.iubenda:mobile-sdk:2.8.4"
 }
 
+repositories {
+maven { url "https://libraries.iubenda.com/android" }
+}
+dependencies {
+implementation "com.iubenda:mobile-sdk:2.6.7"
+}
