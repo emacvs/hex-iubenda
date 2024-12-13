@@ -5,7 +5,7 @@ buildscript {
   repositories {
     google()
     mavenCentral()
-     maven { url "https://libraries.iubenda.com/android" } 
+    maven { url "https://github.com/iubenda/libraries/tree/master/android/com/iubenda/mobile-sdk" }
   }
 
   dependencies {
@@ -96,5 +96,6 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation "com.iubenda:mobile-sdk:2.8.4"
 }
 
