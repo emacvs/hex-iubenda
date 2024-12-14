@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Alert, Button, NativeModules } from 'react-native';
-import {askConsent as askC, initialize, multiply } from 'hex-iubenda'; 
+import {askConsent as askC, openPreferences as openP, initialize, getConsentStatus as getCS, multiply } from 'hex-iubenda'; 
  
 class App extends Component {
   state = {
@@ -16,6 +16,19 @@ class App extends Component {
   askConsent = () => {
     askC();
   };
+
+  openPreference = () => {
+    openP();
+  };
+
+  consentString = async () => {
+      try {
+        const status = await getCS();
+        this.setState({ consentStatus: JSON.stringify(status) });
+      } catch (error) {
+        console.error('Errore durante il recupero dello stato del consenso:', error);
+      }
+  };
  
   render() {
     const { initialized, consentStatus } = this.state;
@@ -25,6 +38,8 @@ class App extends Component {
         <Text style={styles.title}>SDK Iubenda</Text>
         <Text style={styles.status}> {initialized ? 'Inizializzato.' : 'Inizializzazione in corso...'} </Text>
         <Button title="Mostra Consenso" onPress={this.askConsent} />
+        <Button title="Apri Preferenze" onPress={this.openPreference} />
+        <Button title="Mostra consent string" onPress={this.consentString} />
         {consentStatus && <Text style={styles.status}>Consenso: {consentStatus}</Text>}
       </View>
     );

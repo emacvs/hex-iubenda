@@ -138,6 +138,21 @@ export function multiply(a: number, b: number): Promise<number> {
     HexIubenda.askConsent();
   }
 
+  export function openPreferences() {
+    HexIubenda.openPreferences();
+  }
+
+  export async function getConsentStatus() {
+    try {
+      const status = HexIubenda.getConsentStatus();
+      console.log('Stato del consenso:', status);
+      return status;
+    } catch (error) {
+      console.error('Errore durante il recupero dello stato del consenso:', error);
+      throw error;
+    }
+  }
+
     // // Inizializzazione del servizio
     // async initialize() {
     //   if (!this.IubendaBridge) {
