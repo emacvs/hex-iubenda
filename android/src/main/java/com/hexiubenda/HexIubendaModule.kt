@@ -59,7 +59,7 @@ class HexIubendaModule(reactContext: ReactApplicationContext) :
         if (hasValidKey("landscapeHeight", configMap))
                 builder.landscapeHeight(configMap.getInt("landscapeHeight"))
         val config = builder.build()
-        return IubendaCMP.initialize(context, config)
+        IubendaCMP.initialize(context, config)
     }
 
     fun hasValidKey(key: String, options: ReadableMap?): Boolean {
@@ -85,8 +85,8 @@ class HexIubendaModule(reactContext: ReactApplicationContext) :
             val consentStatus = mutableMapOf<String, Any?>()
 
             // Esempio di utilizzo delle impostazioni disponibili
-            //consentStatus["consentString"] = IubendaCMP.storage.consentString
-            //consentStatus["googlePersonalized"] = IubendaCMP.storage.googlePersonalized()
+            // consentStatus["consentString"] = IubendaCMP.storage.consentString
+            // consentStatus["googlePersonalized"] = IubendaCMP.storage.googlePersonalized()
 
             // consentStatus["subjectToGDPR"] = IubendaCMP.storage.subjectToGDPR()
             // consentStatus["cmpPresent"] = IubendaCMP.storage.cmpPresent()

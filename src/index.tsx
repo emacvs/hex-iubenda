@@ -124,14 +124,21 @@ export function multiply(a: number, b: number): Promise<number> {
 //       }
 //     );
 
-  export function initialize(siteId: string, cookiePolicyId: string): Promise<void> {
+  export function initialize(siteId: string, cookiePolicyId: string): boolean {
     const config = {
       gdprEnabled: true,
       forceConsent: true,
       siteId: siteId,
       cookiePolicyId: cookiePolicyId,
     };
-    return HexIubenda.initialize(config);
+    try{
+      HexIubenda.initialize(config);
+      return true
+    }
+    catch(error){
+      console.error("Errore durante l'inizializzazione:", error);
+      throw error;
+    }
   }
 
   export function askConsent() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert, Button, NativeModules } from 'react-native';
+import { View, Text, StyleSheet, Alert, Button, NativeModules, AppRegistry } from 'react-native';
 import {askConsent as askC, openPreferences as openP, initialize, getConsentStatus as getCS, multiply } from 'hex-iubenda'; 
  
 class App extends Component {
