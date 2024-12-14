@@ -1,30 +1,59 @@
-import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply, initialize } from 'hex-iubenda';
-
-export default function App() {
-  const [result, setResult] = useState<number | undefined>();
-  const [init, setInit] = useState<string>();
-  useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
-  useEffect(() => {
-    initialize('3782169','66406702').then(() => setInit('Initialized'));
-  }, []);
-
-  return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-      <Text>Initialize: {init}</Text>
-    </View>
-  );
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Alert, Button, NativeModules } from 'react-native';
+import {askConsent as askC, initialize, multiply } from 'hex-iubenda'; 
+ 
+class App extends Component {
+  state = {
+    initialized: false,
+    consentStatus: '',  // Stato per memorizzare la consentString
+  };
+ 
+  componentDidMount() {
+    let result = initialize('3782169','66406702');
+    this.setState({ initialized: result });
+  }
+ 
+  askConsent = () => {
+    askC();
+  };
+ 
+  render() {
+    const { initialized, consentStatus } = this.state;
+ 
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>SDK Iubenda</Text>
+        <Text style={styles.status}> {initialized ? 'Inizializzato.' : 'Inizializzazione in corso...'} </Text>
+        <Button title="Mostra Consenso" onPress={this.askConsent} />
+        {consentStatus && <Text style={styles.status}>Consenso: {consentStatus}</Text>}
+      </View>
+    );
+  }
 }
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  status: {
+    fontSize: 16,
+    color: '#666',
+  },
+  consentString: {
+    fontSize: 16,
+    color: '#333',
+    marginTop: 20,
+  },
+ 
 });
+ 
+export default App;
+ 

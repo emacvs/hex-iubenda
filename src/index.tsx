@@ -134,6 +134,10 @@ export function multiply(a: number, b: number): Promise<number> {
     return HexIubenda.initialize(config);
   }
 
+  export function askConsent() {
+    HexIubenda.askConsent();
+  }
+
     // // Inizializzazione del servizio
     // async initialize() {
     //   if (!this.IubendaBridge) {

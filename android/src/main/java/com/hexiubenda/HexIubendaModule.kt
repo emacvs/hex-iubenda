@@ -64,14 +64,18 @@ fun initialize(configMap: ReadableMap) {
     if (hasValidKey("landscapeHeight", configMap)) 
         builder.landscapeHeight(configMap.getInt("landscapeHeight"))
     val config = builder.build()
-    IubendaCMP.initialize(context, config)
+    return IubendaCMP.initialize(context, config)
 }
 
 fun hasValidKey(key: String, options: ReadableMap?): Boolean {
   return options != null && options.hasKey(key) && !options.isNull(key)
 }
 
-
+@ReactMethod
+fun askConsent() {
+    val activity = currentActivity
+    IubendaCMP.askConsent(activity)
+}
 
   companion object {
     const val NAME = "HexIubenda"
