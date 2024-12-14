@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Alert, Button, NativeModules, AppRegistry } from 'react-native';
-import {askConsent as askC, openPreferences as openP, initialize, getConsentStatus as getCS, multiply } from 'hex-iubenda'; 
+import {askConsent as askC, openPreferences as openP, initialize, getConsentStatus as getCStatus, multiply } from 'hex-iubenda'; 
  
 class App extends Component {
   state = {
@@ -23,8 +23,8 @@ class App extends Component {
 
   consentString = async () => {
       try {
-        const status = await getCS();
-        this.setState({ consentStatus: JSON.stringify(status) });
+        const status = await getCStatus();
+        this.setState({ consentStatus: status });
       } catch (error) {
         console.error('Errore durante il recupero dello stato del consenso:', error);
       }

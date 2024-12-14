@@ -5,6 +5,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
+import com.google.gson.Gson
 import com.iubenda.iab.IubendaCMP
 import com.iubenda.iab.IubendaCMPConfig
 
@@ -79,31 +80,23 @@ class HexIubendaModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getConsentStatus(promise: Promise) {
-        try {
-            // Recupera lo stato del consenso dai metodi disponibili
-            val consentStatus = mutableMapOf<String, Any?>()
+    fun getConsentStatus(): String {
+        val consentStatus = mutableMapOf<String, Any?>()
+        // Recupera lo stato del consenso dai metodi disponibili
+        // Esempio di utilizzo delle impostazioni disponibili
+        val storage = IubendaCMP.getStorage()
+        consentStatus["consentString"] = storage.getConsentString()
 
-            // Esempio di utilizzo delle impostazioni disponibili
-            // consentStatus["consentString"] = IubendaCMP.storage.consentString
-            // consentStatus["googlePersonalized"] = IubendaCMP.storage.googlePersonalized()
+        //consentStatus["subjectToGDPR"] = storage.getSubjectToGdpr()
+        // consentStatus["cmpPresent"] = storage.getCmpPresentValue()
+        consentStatus["vendorConsents"] = storage.getVendorsString()
+        consentStatus["purposeConsents"] = storage.getPurposesString()
+        consentStatus["consentTimestamp"] = storage.getConsentTimestamp()
+        // consentStatus["preferenceExpressed"] = storage.isPreferenceExpressed()
 
-            // consentStatus["subjectToGDPR"] = IubendaCMP.storage.subjectToGDPR()
-            // consentStatus["cmpPresent"] = IubendaCMP.storage.cmpPresent()
-            // consentStatus["vendorConsents"] = IubendaCMP.storage.vendorConsents()
-            // consentStatus["purposeConsents"] = IubendaCMP.storage.purposeConsents
-            // consentStatus["consentTimestamp"] = IubendaCMP.storage.consentTimestamp()
-            // consentStatus["preferenceExpressed"] = IubendaCMP.storage.isPreferenceExpressed()
-            // consentStatus["isPurposeConsentGivenFor(1)"] =
-            // IubendaCMP.storage.isPurposeConsentGivenFor(1)
-
-            // Risolve il risultato con lo stato del consenso
-            promise.resolve(consentStatus)
-        } catch (e: Exception) {
-            val errorMessage =
-                    "getConsentStatus: Errore durante il recupero dello stato del consenso: ${e.message}"
-            promise.reject("get_consent_status_error", errorMessage, e)
-        }
+        // Risolve il risultato con lo stato del consenso
+        val gson = Gson()
+        return gson.toJson(consentStatus)
     }
 
     companion object {

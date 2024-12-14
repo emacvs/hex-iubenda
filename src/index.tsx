@@ -133,7 +133,7 @@ export function multiply(a: number, b: number): Promise<number> {
     };
     try{
       HexIubenda.initialize(config);
-      return true
+      return true;
     }
     catch(error){
       console.error("Errore durante l'inizializzazione:", error);
