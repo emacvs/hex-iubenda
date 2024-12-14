@@ -1,4 +1,5 @@
 #import "HexIubenda.h"
+#import "React/RCTLog.h"
 #import <iubenda/iubenda-Swift.h>
 @implementation HexIubenda
 RCT_EXPORT_MODULE()
@@ -106,5 +107,61 @@ RCT_EXPORT_METHOD(initialize:(NSDictionary *)config
   });
 }
 
+RCT_EXPORT_METHOD(askConsent)
+{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    @try {
+      UIViewController *presentedViewController = RCTPresentedViewController();
+      [IubendaCMP askConsentFrom:presentedViewController];
+    }
+    @catch (NSException *exception) {
+      RCTLogError(@"Errore durante askConsent: %@", exception.reason);
+    }
+  });
+}
+
+RCT_EXPORT_METHOD(openPreferences)
+{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    @try {
+      UIViewController *presentedViewController = RCTPresentedViewController();
+      [IubendaCMP openPreferencesFrom:presentedViewController];
+    }
+    @catch (NSException *exception) {
+      RCTLogError(@"Errore durante openPreferences: %@", exception.reason);
+    }
+  });
+}
+
+RCT_EXPORT_METHOD(getConsentStatus: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+  @try {
+    // Recupera lo stato del consenso dai metodi disponibili
+    NSMutableDictionary *consentStatus = [NSMutableDictionary new];
+    
+    // Esempio di utilizzo delle impostazioni disponibili
+    consentStatus[@"consentString"] = [IubendaCMP.storage consentString];
+    consentStatus[@"googlePersonalized"] = @([IubendaCMP.storage googlePersonalized]);
+    
+    //consentStatus[@"subjectToGDPR"] = @([IubendaCMP.storage subjectToGDPR]);
+    // consentStatus[@"cmpPresent"] = @([IubendaCMP.storage cmpPresent]);
+    //consentStatus[@"vendorConsents"] = @([IubendaCMP.storage VendorConsents]);
+    // consentStatus[@"purposeConsents"] = [IubendaCMP.storage PurposeConsents];
+    // consentStatus[@"consentTimestamp"] = @([IubendaCMP.storage consentTimestamp]);
+    // consentStatus[@"preferenceExpressed"] = @([IubendaCMP.storage isPreferenceExpressed]);
+    //consentStatus[@"isPurposeConsentGivenFor(1)"] = [IubendaCMP.storage isPurposeConsentGivenFor(1)];
+    // Risolve il risultato con lo stato del consenso
+    NSData *data = [NSJSONSerialization dataWithJSONObject:consentStatus options:NSJSONWritingPrettyPrinted error:nil];
+
+    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+    resolve(jsonString);
+  }
+  @catch (NSException *exception) {
+    NSString *errorMessage = [NSString stringWithFormat:@"getConsentStatus: Errore durante il recupero dello stato del consenso: %@", exception.reason];
+    RCTLogError(@"%@", errorMessage);
+    reject(@"get_consent_status_error", errorMessage, nil);
+  }
+}
 
 @end
